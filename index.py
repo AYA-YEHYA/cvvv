@@ -1,18 +1,20 @@
 import cv2
+import numpy as np
+from scipy import ndimage
+kernel_3x3 = np.array([[-1, -1, -1],
+[-1, 8, -1],
+[-1, -1, -1]])
 
-from matplotlib import pyplot as plt
-img = cv2.imread("Figure2.jpg")
-laplacian = cv2.Laplacian(img, cv2.CV_64F)
-sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
-sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
-sobelImg= cv2.add(sobelx, sobely)
-schx= cv2.Scharr(img, cv2.CV_64F, 1, 0)
-schy= cv2.Scharr(img, cv2.CV_64F, 0, 1)
-plt.subplot(2,3,1),plt.imshow(img,cmap="gray"),plt.title("OriginallImage")
-plt.subplot(2,3,2),plt.imshow(laplacian,cmap="gray"),plt.title("laplacian Image")
-plt.subplot(2,3,3),plt.imshow(sobelx,cmap="gray"),plt.title("sobelx Image")
-plt.subplot(2,3,4),plt.imshow(sobely,cmap="gray"),plt.title("sobely Image")
-plt.subplot(2,3,5),plt.imshow(schx,cmap="gray"),plt.title("schx Image")
-plt.subplot(2,3,6),plt.imshow(schy,cmap="gray"),plt.title("schy Image")
+img=cv2.imread("Figure1")
+k3=ndimage.convlove(img,kernel_3x3)
+ 
+blured=cv2.GaussianBlur(img,(7,7),0)
+g_hbf=img-blured
 
-plt.imshow()
+cv2.imshow('originalImage',img)
+cv2.imshow('3x3',k3)
+cv2.imshow('blureImage',blured)
+cv2.imshow('g_hbf',g_hbf)
+
+cv2.waitKey()
+cv2.destroyAllWindows()
